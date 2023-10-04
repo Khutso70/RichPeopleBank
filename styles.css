@@ -1,0 +1,98 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.space {
+  padding-top: 56px;
+}
+section {
+  height: 100vh;
+}
+section#hero {
+  height: max-content;
+  /* border-top: solid 1px blue; */
+
+  background: url(images/smartphone-with-money-credit-card-wallet_23-2148080971.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.color {
+  background-color: rgba(0, 0, 0, 0.644);
+  height: 90vh;
+}
+.loginDiv {
+  background-color: rgba(243, 243, 243, 0.644);
+  padding: 25px 52px;
+  border-radius: 15px;
+  box-shadow: -8px -8px 15px rgba(77, 77, 77, 0.582),
+    5px 5px 15px rgba(255, 255, 255, 0.582);
+}
+.registerDiv {
+  background-color: rgba(38, 71, 0, 0.589);
+  color: #fff;
+  padding: 25px 52px;
+  border-radius: 15px;
+  box-shadow: -8px -8px 15px rgba(77, 77, 77, 0.582),
+    5px 5px 15px rgba(46, 116, 55, 0.582);
+}
+.rg {
+  border: 0.5px solid white !important;
+  color: white !important;
+}
+.hidden {
+  display: none !important;
+}
+
+.txt-switch {
+  cursor: pointer;
+}
+/*Display In the moment of Development*/
+.card-header {
+  display: inline-block;
+}
+.col1 {
+  border-left: solid red 3px;
+}
+.name,
+.balance {
+  color: #fff;
+  font-weight: bolder;
+}
+
+.deposit,
+.withdraw,
+.transfer {
+  color: white;
+  padding: 10px 10px;
+  border-radius: 15px;
+}
+.deposit {
+  background: rgb(51, 170, 35);
+}
+.withdraw {
+  background: rgb(170, 35, 35);
+}
+.transfer {
+  background: rgb(168, 170, 35);
+}
+.actions .form-text {
+  color: white;
+}
+section#accountSection {
+  width: 100%;
+  min-height: 100vh;
+  height: max-content;
+  background: url(images/top-view-map-with-magnifying-glass-camera-traveling_23-2148688693.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.card {
+  background-color: rgba(143, 143, 143, 0.644) !important;
+}
+.card-header {
+  background-color: rgba(87, 87, 87, 0.767) !important;
+}
+.table-footer {
+  border-top: solid 3px rgb(170, 35, 35);
+}
