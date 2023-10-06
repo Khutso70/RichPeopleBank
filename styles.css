@@ -3,9 +3,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  min-width: 323px;
+  min-height: fit-content;
+}
 .space {
   padding-top: 56px;
 }
+
 section {
   height: 100vh;
 }
@@ -14,8 +19,9 @@ section#hero {
   /* border-top: solid 1px blue; */
 
   background: url(images/smartphone-with-money-credit-card-wallet_23-2148080971.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
 }
 .color {
   background-color: rgba(0, 0, 0, 0.644);
@@ -95,4 +101,9 @@ section#accountSection {
 }
 .table-footer {
   border-top: solid 3px rgb(170, 35, 35);
+}
+@media (max-width: 364px) {
+  #balance-display {
+    font-size: 1em;
+  }
 }

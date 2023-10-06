@@ -16,6 +16,9 @@ const nameDisplay = document.querySelector("#name-display");
 const balanceDisplay = document.querySelector("#balance-display");
 const tableBody = document.querySelector("#table-body");
 
+const btnDeposit = document.querySelector("#btn-deposit");
+const btnWithdraw = document.querySelector("#btn-withdraw");
+const btnTransfer = document.querySelector("#btn-transfer");
 const inputDeposit = document.querySelector("#input-deposit");
 const inputWithdraw = document.querySelector("#input-withdraw");
 const inputTransfer = document.querySelector("#input-transfer");
@@ -24,6 +27,12 @@ const inputTransferUserName = document.querySelector(
 );
 
 //--------------------------------END OF INITIALIZATION FOR DOM ELEMENTS--------------------------------
+const user = {
+  userName: "default",
+  password: "0000",
+  transections: [0],
+};
+
 const john = {
   userName: "john01",
   password: "1111",
@@ -37,7 +46,7 @@ const thabo = {
 const khutso = {
   userName: "khutso03",
   password: "3333",
-  transections: [945, 12354, 77895, 100, -4586, 24, -49894],
+  transections: [945.48, 12354, 77895.52, 100.01, -4586, 24, -49894],
 };
 const thamaga = {
   userName: "thamaga04",
@@ -45,6 +54,11 @@ const thamaga = {
   transections: [96, 548, 344, 97, -98, 976, 365],
 };
 let arrUser = [john, thabo, khutso, thamaga];
+
+//---------------------------------------------------
+function createUser(name) {
+  this.name = name;
+}
 //---------------------------------------------------
 function loginLogOut() {
   if (heroSection.classList.contains("hidden")) {
@@ -55,6 +69,8 @@ function loginLogOut() {
     accountSection.classList.remove("hidden");
   }
 }
+//-----------------------------------------------------
+
 //-----------------------------------------------------
 function logOutFunction() {
   loginLogOut();
@@ -84,36 +100,110 @@ function loginFunction() {
           .toUpperCase()
           .slice(0, arrUser[i].userName.length - 2)}` //change it so it can also work for 100+
       );
-      loginLogOut();
-      tableBody.innerHTML = "";
-      nameDisplay.textContent = arrUser[i].userName.toUpperCase();
-      for (let count = 0; count < arrUser[i].transections.length; count++) {
-        sum += arrUser[i].transections[count];
 
-        if (arrUser[i].transections[count] > 0) {
-          type = "Deposit";
-          color = "success";
-        } else {
-          type = "Withdraw";
-          color = "danger";
+      btnTransfer.addEventListener("click", function () {
+        let next;
+        for (next = 0; next < arrUser.length; next++) {
+          console.log(next);
+          if (arrUser[next].userName == inputTransferUserName.value) {
+            if (sum >= Number(inputTransfer.value)) {
+              sum = 0;
+              arrUser[i].transections.push(Number("-" + inputTransfer.value));
+              arrUser[next].transections.push(Number(inputTransfer.value));
+              displayTransections();
+
+              displayBalance();
+            } else {
+              alert(
+                `Not Enough Money:\nAvailable Balance: R${sum.toLocaleString(
+                  undefined,
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    useGrouping: true,
+                  }
+                )}`
+              );
+            }
+            break;
+          } else if (next == arrUser.length - 1) {
+            console.log("Account Does Not Exist");
+          }
         }
-        html = `<tr>
+      });
+
+      btnWithdraw.addEventListener("click", function () {
+        if (sum >= Number(inputWithdraw.value)) {
+          sum = 0;
+          arrUser[i].transections.push(Number("-" + inputWithdraw.value));
+          displayTransections();
+
+          displayBalance();
+        } else {
+          alert(
+            `Not Enough Money:\nAvailable Balance: R${sum.toLocaleString(
+              undefined,
+              {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                useGrouping: true,
+              }
+            )}`
+          );
+        }
+      });
+
+      btnDeposit.addEventListener("click", function () {
+        sum = 0;
+        arrUser[i].transections.push(Number(inputDeposit.value));
+        displayTransections();
+
+        displayBalance();
+      });
+
+      loginLogOut();
+      nameDisplay.textContent = arrUser[i].userName.toUpperCase();
+
+      function displayTransections() {
+        tableBody.innerHTML = "";
+
+        for (let count = 0; count < arrUser[i].transections.length; count++) {
+          sum += arrUser[i].transections[count];
+
+          if (arrUser[i].transections[count] > 0) {
+            type = "Deposit";
+            color = "success";
+          } else {
+            type = "Withdraw";
+            color = "danger";
+          }
+          html = `<tr>
         <th scope="row">(${count + 1})</th>
         <td>${arrUser[i].transections[count]}</td>
         <td class='text-${color}'>${type}</td>
         <td>####</td>
         </tr>`;
 
-        tableBody.insertAdjacentHTML("afterbegin", html);
+          tableBody.insertAdjacentHTML("afterbegin", html);
+        }
       }
-
-      balanceDisplay.textContent = `Balance: R${sum}`;
+      displayTransections();
+      function displayBalance() {
+        balanceDisplay.textContent = `Balance: R${sum.toLocaleString(
+          undefined,
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            useGrouping: true,
+          }
+        )}`;
+      }
+      displayBalance();
       break;
     } else if (i == arrUser.length - 1) {
       alert("Incorrect Password Or Username");
     }
   }
-  console.log(inputUserName.value);
 }
 
 //-----------------------------------------------------
@@ -121,6 +211,9 @@ function switchOption() {
   if (btnLogin.classList.contains("hidden")) {
     btnLogin.classList.remove("hidden");
     btnRegister.classList.add("hidden");
+
+    heroSection.style =
+      "background: url(images/smartphone-with-money-credit-card-wallet_23-2148080971.jpg);";
 
     logOrRegDiv.classList.add("loginDiv");
     logOrRegDiv.classList.remove("registerDiv");
@@ -130,6 +223,8 @@ function switchOption() {
     btnRegister.classList.remove("hidden");
     logOrRegDiv.classList.remove("loginDiv");
     logOrRegDiv.classList.add("registerDiv");
+    heroSection.style =
+      "background: url(images/winner-celebration-raining-money-with-black-woman-spray-cash-investment-wealth-achievement-success-profit-with-excited-young-female-after-winning-lotto-cashback-promotion_590464-83806.jpeg);";
     swtich.textContent = "Log In";
   }
 }
