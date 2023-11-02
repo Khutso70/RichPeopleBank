@@ -35,12 +35,12 @@ section#hero {
     5px 5px 15px rgba(255, 255, 255, 0.582);
 }
 .registerDiv {
-  background-color: rgba(38, 71, 0, 0.589);
+  background-color: rgba(0, 0, 0, 0.589);
   color: #fff;
   padding: 25px 52px;
   border-radius: 15px;
-  box-shadow: -8px -8px 15px rgba(77, 77, 77, 0.582),
-    5px 5px 15px rgba(46, 116, 55, 0.582);
+  box-shadow: -8px -8px 15px rgba(128, 128, 128, 0.582),
+    5px 5px 15px rgba(114, 114, 114, 0.582);
 }
 .rg {
   border: 0.5px solid white !important;
@@ -99,8 +99,14 @@ section#accountSection {
 .card-header {
   background-color: rgba(87, 87, 87, 0.767) !important;
 }
+
 .table-footer {
   border-top: solid 3px rgb(170, 35, 35);
+}
+.table-container {
+  /* Adjust the width as needed */
+  height: 500px !important; /* Adjust the height as needed */
+  overflow: auto !important; /* Enable scroll bars when content overflows */
 }
 @media (max-width: 364px) {
   #balance-display {

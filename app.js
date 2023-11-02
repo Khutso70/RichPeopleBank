@@ -8,7 +8,7 @@ const btnDelete = document.querySelector("#btn-Delete");
 const btnNavLogIn = document.querySelector("#nav-btn-logIn");
 const btnNavRegister = document.querySelector("#nav-btn-register");
 
-const inputUserName = document.querySelector("#inputUserName");
+let inputUserName = document.querySelector("#inputUserName"); // "let" for changing users so it can change else it was also a const
 const inputUserPassword = document.querySelector("#inputPasswordLogin");
 
 const accountSection = document.querySelector("#accountSection");
@@ -27,10 +27,10 @@ const inputTransferUserName = document.querySelector(
 );
 
 //--------------------------------END OF INITIALIZATION FOR DOM ELEMENTS--------------------------------
-const user = {
-  userName: "default",
-  password: "0000",
-  transections: [0],
+let newUser = {
+  userName: "",
+  password: "",
+  transections: [],
 };
 
 const john = {
@@ -56,9 +56,23 @@ const thamaga = {
 let arrUser = [john, thabo, khutso, thamaga];
 
 //---------------------------------------------------
-function createUser(name) {
-  this.name = name;
+function addNewUser() {
+  if (
+    inputUserName.value != "" &&
+    inputUserPassword.value != "" &&
+    inputUserPassword.value.length > 3 &&
+    inputUserName.value.length > 2
+  ) {
+    newUser.userName = inputUserName.value;
+    newUser.password = inputUserPassword.value;
+    arrUser.push(newUser);
+    alert(`🍷Welcome to the winning team ${inputUserName.value}🍷`);
+    switchOption();
+  } else {
+    alert("Make Sure You Entered A Valid user Name and Password");
+  }
 }
+btnRegister.addEventListener("click", addNewUser);
 //---------------------------------------------------
 function loginLogOut() {
   if (heroSection.classList.contains("hidden")) {
@@ -70,21 +84,28 @@ function loginLogOut() {
   }
 }
 //-----------------------------------------------------
-
-//-----------------------------------------------------
-function logOutFunction() {
-  loginLogOut();
-  location.reload();
+function clearinputs() {
+  inputDeposit.value = "";
+  inputTransfer.value = "";
+  inputTransferUserName.value = "";
+  inputWithdraw.value = "";
+  inputUserName.value = "";
+  inputUserPassword.value = "";
 }
 //-----------------------------------------------------
+
+//-----------------------------------------------------
+
 function checkIfLogged() {
   if (heroSection.classList.contains("hidden")) {
     alert("You Have Logged In Already. Try To Log Out First");
   } else {
-    logOutFunction();
+    loginLogOut();
+    clearinputs();
   }
 }
-//---------------------Funct------------------------
+
+//-----------------------Funct--------------------------
 function loginFunction() {
   for (let i in arrUser) {
     let sum = 0;
@@ -98,24 +119,25 @@ function loginFunction() {
       alert(
         `Welcome back ${arrUser[i].userName
           .toUpperCase()
-          .slice(0, arrUser[i].userName.length - 2)}` //change it so it can also work for 100+
+          .slice(0, arrUser[i].userName.length)}` //change it so it can also work for 100+
       );
 
       btnTransfer.addEventListener("click", function () {
         let next;
         for (next = 0; next < arrUser.length; next++) {
-          console.log(next);
           if (arrUser[next].userName == inputTransferUserName.value) {
             if (sum >= Number(inputTransfer.value)) {
               sum = 0;
               arrUser[i].transections.push(Number("-" + inputTransfer.value));
               arrUser[next].transections.push(Number(inputTransfer.value));
               displayTransections();
-
               displayBalance();
+              clearinputs();
             } else {
               alert(
-                `Not Enough Money:\nAvailable Balance: R${sum.toLocaleString(
+                `${
+                  arrUser[i].userName
+                } You dont have Enough Money:\nAvailable Balance: R${sum.toLocaleString(
                   undefined,
                   {
                     minimumFractionDigits: 2,
@@ -127,7 +149,7 @@ function loginFunction() {
             }
             break;
           } else if (next == arrUser.length - 1) {
-            console.log("Account Does Not Exist");
+            alert("Account Does Not Exist");
           }
         }
       });
@@ -137,11 +159,13 @@ function loginFunction() {
           sum = 0;
           arrUser[i].transections.push(Number("-" + inputWithdraw.value));
           displayTransections();
-
           displayBalance();
+          clearinputs();
         } else {
           alert(
-            `Not Enough Money:\nAvailable Balance: R${sum.toLocaleString(
+            `${
+              arrUser[i].userName
+            } You dont have Enough Money:\nAvailable Balance: R${sum.toLocaleString(
               undefined,
               {
                 minimumFractionDigits: 2,
@@ -157,8 +181,20 @@ function loginFunction() {
         sum = 0;
         arrUser[i].transections.push(Number(inputDeposit.value));
         displayTransections();
-
         displayBalance();
+        clearinputs();
+      });
+      btnDelete.addEventListener("click", function () {
+        let deleteConfirm = confirm(
+          `Are you sure to remove ${arrUser[i].userName}?`
+        );
+        if (deleteConfirm) {
+          loginLogOut();
+          alert(`${arrUser[i].userName}'s Account has been deleted`);
+          arrUser[i] = "deleted";
+        } else {
+          alert(`${arrUser[i].userName}'s Account Not deleted`);
+        }
       });
 
       loginLogOut();
@@ -173,20 +209,37 @@ function loginFunction() {
           if (arrUser[i].transections[count] > 0) {
             type = "Deposit";
             color = "success";
-          } else {
+          } else if (arrUser[i].transections[count] < 0) {
             type = "Withdraw";
             color = "danger";
           }
+          const currentDate = new Date();
+
+          // Get the various components of the date
+          const year = currentDate.getFullYear();
+          const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
+          const day = currentDate.getDate();
+
           html = `<tr>
         <th scope="row">(${count + 1})</th>
         <td>${arrUser[i].transections[count]}</td>
         <td class='text-${color}'>${type}</td>
-        <td>####</td>
+        <td>${year}-${month}-${day}
+        </td>
         </tr>`;
 
           tableBody.insertAdjacentHTML("afterbegin", html);
         }
       }
+      function logOutFunction() {
+        // i = -1;
+        sum = 0;
+
+        console.log(sum);
+        loginLogOut();
+        clearinputs();
+      }
+      btnLogOut.addEventListener("click", logOutFunction);
       displayTransections();
       function displayBalance() {
         balanceDisplay.textContent = `Balance: R${sum.toLocaleString(
@@ -236,4 +289,3 @@ btnLogin.addEventListener("click", loginFunction);
 
 btnNavRegister.addEventListener("click", checkIfLogged);
 btnNavLogIn.addEventListener("click", checkIfLogged);
-btnLogOut.addEventListener("click", logOutFunction);
